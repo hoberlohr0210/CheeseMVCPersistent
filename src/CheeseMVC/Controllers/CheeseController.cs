@@ -10,11 +10,11 @@ namespace CheeseMVC.Controllers
 {
     public class CheeseController : Controller
     {
-        private CheeseDbContext context;
+        private readonly CheeseDbContext context;
 
         public CheeseController(CheeseDbContext dbContext)
         {
-            context = dbContext;
+            this.context = dbContext;
         }
 
         // GET: /<controller>/
@@ -29,7 +29,7 @@ namespace CheeseMVC.Controllers
         public IActionResult Add()
         {
             //passes collection of all category objects to the constructor
-            
+            //generates a select list
             AddCheeseViewModel addCheeseViewModel = new AddCheeseViewModel(context.Categories.ToList());
             return View(addCheeseViewModel);
         }
@@ -76,6 +76,27 @@ namespace CheeseMVC.Controllers
             context.SaveChanges();
 
             return Redirect("/");
+        }
+
+        //default routing
+        public IActionResult Category(int id)
+        {
+            if (id ==0)
+            {
+                return Redirect("/Category");
+            }
+
+            //will retrieve a specific  category that has its cheeses list populated
+            //that matches a given ID passed in by the user
+            CheeseCategory theCategory = context.Categories
+                .Include(cat => cat.Cheeses)
+                .Single(cat => cat.ID == id);
+
+            ViewBag.title = "Cheeses in category: " + theCategory.Name;
+            //passes the list into the View
+            //wouldn't have been populated if not included above
+            //Cheeses is a property we already defined
+            return View("Index", theCategory.Cheeses);
         }
     }
 }

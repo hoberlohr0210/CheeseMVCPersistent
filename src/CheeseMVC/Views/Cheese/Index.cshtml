@@ -1,4 +1,4 @@
-﻿@model List<CheeseMVC.Models.Cheese>
+﻿@model IList<CheeseMVC.Models.Cheese>
 
 <h1>@ViewBag.Category</h1>
 
@@ -15,7 +15,7 @@
         <tr>
             <td>@cheese.Name</td>
             <td>@cheese.Description</td>
-            <td>@cheese.Category</td>
+            <td>@cheese.Category.Name</td>
         </tr>
     }
 </table>

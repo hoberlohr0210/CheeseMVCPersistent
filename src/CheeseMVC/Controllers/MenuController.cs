@@ -63,7 +63,7 @@ namespace CheeseMVC.Controllers
 
             //we also want the menu object itself
             //we retrieve it using the given ID
-            Menu menu = context.Menus.Single(m => m.ID == id);
+            Menu menu = context.Menus.FirstOrDefault(m => m.ID == id);
 
             //we are using the items and menu we found above to 
             //build this ViewMenuViewModel and pass it into the View
@@ -116,7 +116,8 @@ namespace CheeseMVC.Controllers
                     context.SaveChanges();
                 }
 
-                return Redirect(string.Format("/Menu/ViewMenu/{0}", addMenuItemViewModel));
+                //return Redirect(string.Format("/Menu"));
+                return Redirect(string.Format("/Menu/ViewMenu/" + addMenuItemViewModel.MenuID));
             }
 
             return View(addMenuItemViewModel);
